@@ -24,5 +24,10 @@ namespace View
         {
             InitializeComponent();
         }
+
+        private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
