@@ -6,20 +6,39 @@
         xmlns:local="clr-namespace:Presentation.View"
         xmlns:vm="clr-namespace:Presentation.ViewModel"
         mc:Ignorable="d"
-        Title="MyBalls" Height="550" Width="1000"
-        Background="Black">
+        Title="MyBalls" 
+        Height="600" 
+        Width="1000"
+        Background="Black"
+        d:DesignHeight="600"
+        d:DesignWidth="1000"
+        ResizeMode="NoResize">
     <Window.DataContext>
-        <vm:ViewModel/>
+        <vm:MainViewModel/>
     </Window.DataContext>
-    <Grid Background="#FF1A1A1A" Margin="1,1,1,1">
+    <Grid Background="#FF1A1A1A" Margin="1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="169*"/>
             <ColumnDefinition Width="31*"/>
         </Grid.ColumnDefinitions>
-        <Button Command="{Binding CreateBalls}" x:Name="StartSimulationButton" Grid.Column="1" Content="Start simulation" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFCCCCCC"/>
-        <TextBox Text="{Binding BallsNumber}" x:Name="BallsNumberTextBox" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Left" 
+        <Button Command="{Binding CreateBallsAndStartSimulation}" x:Name="StartSimulationButton" Grid.Column="1" Content="Start simulation" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FFCCCCCC"/>
+        <TextBox Text="{Binding BallsNumber,UpdateSourceTrigger=PropertyChanged}" x:Name="BallsNumberTextBox" Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Left" 
                  VerticalAlignment="Top" Width="120" Background="#FFDFDFDF" BorderBrush="#FFABADB3" BorderThickness="1,1,1,1" Margin="0,206,0,0" RenderTransformOrigin="0.5,0.5"/>
-        <Canvas x:Name="BallsCanvas" Background="#FF2D2D2D" Margin="10,10,10,10"/>
-
+        <Canvas x:Name="BallsCanvas" Background="#FF2D2D2D" Width="800" Height="500">
+            <ItemsControl ItemsSource="{Binding Path = BallsList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate >
+                            <Canvas>
+                            <Ellipse Width="{Binding R}" Height="{Binding R}" Fill="White" StrokeThickness="2">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                            </Canvas>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+        </Canvas>
+        
     </Grid>
 </Window>

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Presentation.Model
+namespace Data
 {
-    internal class Model
+    internal class MainData
     {
     }
 }
