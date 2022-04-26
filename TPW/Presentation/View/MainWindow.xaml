@@ -26,19 +26,19 @@
                  VerticalAlignment="Top" Width="120" Background="#FFDFDFDF" BorderBrush="#FFABADB3" BorderThickness="1,1,1,1" Margin="0,206,0,0" RenderTransformOrigin="0.5,0.5"/>
         <Canvas x:Name="BallsCanvas" Background="#FF2D2D2D" Width="800" Height="500">
             <ItemsControl ItemsSource="{Binding Path = BallsList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate >
-                            <Canvas>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate >
+                        <Canvas>
                             <Ellipse Width="{Binding R}" Height="{Binding R}" Fill="White" StrokeThickness="2">
-                                    <Ellipse.RenderTransform>
-                                        <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
-                                    </Ellipse.RenderTransform>
-                                </Ellipse>
-                            </Canvas>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                <Ellipse.RenderTransform>
+                                    <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                                </Ellipse.RenderTransform>
+                            </Ellipse>
+                        </Canvas>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Canvas>
-        
+
     </Grid>
 </Window>

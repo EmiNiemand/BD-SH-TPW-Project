@@ -7,37 +7,50 @@ using Logic;
 
 namespace Presentation.Model
 {
+    public class BallEventArgs : EventArgs
+    {
+        public Vector2 position;
+        public int id;
+        public BallEventArgs(int id, Vector2 position)
+        {
+            this.id = id;
+            this.position = position;
+        }
+    }
+
     public class MainModel
     {
-
-        private Vector2 _screenSize = new Vector2(800, 500);
-        private LogicAbstractApi _logic;
-        private int _ballsNumber;
+        public Vector2 screenSize;
+        LogicAbstractApi logic;
+        public event EventHandler<BallEventArgs> BallMoved;
+        private int _ballNumber;
+        public float ballsR;
 
         public MainModel()
         {
-            _logic = LogicAbstractApi.CreateApi(_screenSize);
-        }
-        internal void StartSimulation(int ballsNumber)
-        {
-            _logic.ClearBalls();
-            _logic.CreateBalls(ballsNumber);
-            _logic.MoveBalls();
-        }
-
-        internal ObservableCollection<Ball> GetBalls()
-        {
-            return _logic.GetBalls();
+            ballsR = 10;
+            screenSize = new Vector2(800, 500);
+            logic = LogicAbstractApi.CreateApi(screenSize);
+            logic.BallMoved += (sender, args) =>
+            {
+                BallMoved?.Invoke(this, new BallEventArgs(args.id, args.position));
+            };
         }
 
-        internal void SetBallsNumber(int ballsNumber)
+        public int GetBallsNumber()
         {
-            _ballsNumber = ballsNumber;
+            return _ballNumber;
         }
 
-        internal int GetBallsNumber()
+        public void SetBallsNumber(int number)
         {
-            return _ballsNumber;
+            _ballNumber = number;
+        }
+
+        public void StartSimulation()
+        {
+            logic.CreateBalls(_ballNumber, ballsR);
+            logic.ChangeBallsPosition(33);
         }
     }
 }
