@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTests", "DataTests\DataTests.csproj", "{BF9B733F-6AC0-43C8-981F-E9A8708CF95D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicTests", "LogicTests\LogicTests.csproj", "{25746073-857F-42D2-B77E-75380471BEF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicTests", "LogicTests\LogicTests.csproj", "{25746073-857F-42D2-B77E-75380471BEF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
