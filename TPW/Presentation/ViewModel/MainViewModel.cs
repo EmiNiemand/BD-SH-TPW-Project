@@ -39,7 +39,7 @@ namespace Presentation.ViewModel
                 BallsList.Clear();
                 for (int i = 0; i < BallsNumber; i++)
 				{
-                    BallsList.Add(new NotifyBall(_model.screenSize/2, _model.ballsR));
+                    BallsList.Add(new NotifyBall(_model.GetScreenSize()/2, _model.GetBallsR()));
 				}
 
                 _model.BallMoved += (sender, argv) =>
