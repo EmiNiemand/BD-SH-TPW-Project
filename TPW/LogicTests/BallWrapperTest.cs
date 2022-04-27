@@ -11,7 +11,7 @@ namespace LogicTests
         [SetUp]
         public void Setup()
         {
-            logic = LogicAbstractApi.CreateApi(new System.Numerics.Vector2(800,500));
+            logic = LogicAbstractApi.CreateApi(new System.Numerics.Vector2(800, 500));
             ballWrapper = new BallWrapper(1, logic.data.CreateBall(new System.Numerics.Vector2(4, 3), 10));
         }
 
