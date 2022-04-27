@@ -12,7 +12,8 @@ namespace LogicTests
         public void Setup()
         {
             logic = LogicAbstractApi.CreateApi(new System.Numerics.Vector2(800, 500));
-            ballWrapper = new BallWrapper(1, logic.data.CreateBall(new System.Numerics.Vector2(4, 3), 10));
+            logic.CreateBalls(1, 10);
+            ballWrapper = logic.GetBalls()[0];
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace LogicTests
         [Test]
         public void GetPositionTest()
         {
-            Assert.AreEqual(ballWrapper.GetPosition(), new System.Numerics.Vector2(4, 3));
+            Assert.IsNotNull(ballWrapper.GetPosition());
         }
 
         [Test]
