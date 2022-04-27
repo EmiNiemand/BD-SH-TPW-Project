@@ -24,8 +24,8 @@ namespace Logic
 
 	public abstract class LogicAbstractApi
 	{
-		public DataAbstractApi? data;
-		public IList<BallWrapper>? ballsList;
+		protected DataAbstractApi? data;
+		protected IList<BallWrapper>? ballsList;
 		public event EventHandler<BallEventArgs>? BallMoved;
 
 		protected virtual void OnBallMoved(BallEventArgs args)
