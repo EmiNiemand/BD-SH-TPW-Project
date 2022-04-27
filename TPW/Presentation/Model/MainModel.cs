@@ -26,11 +26,15 @@ namespace Presentation.Model
         private int _ballNumber;
         public float ballsR;
 
-        public MainModel()
+        public MainModel(LogicAbstractApi logic = default(LogicAbstractApi))
         {
             ballsR = 10;
             screenSize = new Vector2(800, 500);
-            logic = LogicAbstractApi.CreateApi(screenSize);
+            if (logic == null)
+            {
+                logic = LogicAbstractApi.CreateApi(screenSize);
+            }
+            this.logic = logic;
             logic.BallMoved += (sender, args) =>
             {
                 BallMoved?.Invoke(this, new BallEventArgs(args.id, args.position));

@@ -39,9 +39,13 @@ namespace Logic
 		public abstract void ClearBalls();
 		public abstract void MoveBalls();
 		public abstract void ChangeBallsPosition(int interval_ms);
-		public static LogicAbstractApi CreateApi(Vector2 screenSize)
+		public static LogicAbstractApi CreateApi(Vector2 screenSize, DataAbstractApi data = default(DataAbstractApi))
 		{
-			return new LogicApi(screenSize);
+			if(data == null)
+            {
+				data = DataAbstractApi.CreateApi();
+            }
+			return new LogicApi(screenSize, data);
 		}
 	}
 
@@ -50,9 +54,9 @@ namespace Logic
 		public override Vector2 screenSize { get; }
 		private Random random;
 
-		public LogicApi(Vector2 screenSize)
+		public LogicApi(Vector2 screenSize, DataAbstractApi data)
 		{
-			this.data = DataAbstractApi.CreateApi();
+			this.data = data;
 			this.screenSize = screenSize;
 			ballsList = new List<BallWrapper>();
 			random = new Random();
