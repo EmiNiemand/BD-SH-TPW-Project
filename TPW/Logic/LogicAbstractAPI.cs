@@ -37,8 +37,9 @@ namespace Logic
 		public abstract void CreateBalls(int ballsNumber, float ballsR);
 		public abstract IList<BallWrapper> GetBalls();
 		public abstract void ClearBalls();
-		public abstract void MoveBalls();
-		public abstract void ChangeBallsPosition(int interval_ms);
+		public abstract void MoveBalls(int interval_ms);
+		public abstract void MoveBall(BallWrapper ball);
+		public abstract void ChangeBallsPosition(int interval_ms, BallWrapper ball);
 		public static LogicAbstractApi CreateApi(Vector2 screenSize, DataAbstractApi data = default(DataAbstractApi))
 		{
 			if(data == null)
@@ -99,25 +100,30 @@ namespace Logic
 			return position + randomPoint;
 		}
 
-		public override void MoveBalls()
+		public override void MoveBalls(int interval_ms)
 		{
 			foreach (var ball in ballsList)
-			{
-				ball.ChangePosition(GetNextRandomPosition(ball.GetPosition(), ball.GetRadius()));
-				OnBallMoved(new BallEventArgs(ball.id, ball.GetPosition()));
-			}
+            {
+				ChangeBallsPosition(interval_ms, ball);
+            }
 		}
 
-		public override async void ChangeBallsPosition(int interval_ms)
+		public override void MoveBall(BallWrapper ball)
 		{
-			await Task.Run(() =>
-			{
-				while (true)
+				ball.ChangePosition(GetNextRandomPosition(ball.GetPosition(), ball.GetRadius()));
+				OnBallMoved(new BallEventArgs(ball.id, ball.GetPosition()));
+		}
+
+		public override async void ChangeBallsPosition(int interval_ms, BallWrapper ball)
+		{
+				await Task.Run(() =>
 				{
-					MoveBalls();
-					Task.Delay(interval_ms).Wait();
-				}
-			});
+					while (true)
+					{
+						MoveBall(ball);
+						Task.Delay(interval_ms).Wait();
+					}
+				});
 		}
 
 		protected override void OnBallMoved(BallEventArgs args)

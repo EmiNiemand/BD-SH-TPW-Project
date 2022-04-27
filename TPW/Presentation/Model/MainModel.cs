@@ -54,7 +54,7 @@ namespace Presentation.Model
         public void StartSimulation()
         {
             logic.CreateBalls(_ballNumber, ballsR);
-            logic.ChangeBallsPosition(33);
+            logic.MoveBalls(33);
         }
     }
 }
