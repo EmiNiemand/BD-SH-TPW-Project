@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Numerics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Data
 {
     public abstract class DataAbstractApi
     {
-        public abstract IBall CreateBall(Vector2 position, float ballR);
+        public event EventHandler<BallEventArgs>? BallMoved;
+        protected IList<IBall>? ballsList;
+
+        public abstract void CreateBalls(Vector2 position, float ballD);
+        public abstract void StartSimulation();
+        public virtual void OnBallMoved(BallEventArgs args)
+        {
+            BallMoved?.Invoke(this, args);
+        }
         public static DataAbstractApi CreateApi()
         {
             return new DataApi();
@@ -19,11 +28,30 @@ namespace Data
     {
         public DataApi()
         {
+            ballsList = new List<IBall>();
         }
 
-        public override IBall CreateBall(Vector2 position, float ballR)
+        public override void StartSimulation()
         {
-            return new Ball(position, ballR);
+            foreach (var ball in ballsList)
+            {
+                ball.Moved += (sender, args) =>
+                {
+                    this.OnBallMoved(args);
+                };
+                Task.Factory.StartNew(ball.StartMoving);
+            }
+        }
+
+        public override void CreateBalls(Vector2 position, float ballD)
+        {
+            Ball ball = new Ball(ballsList.Count, position, ballD);
+            ballsList.Add(ball);
+        }
+
+        public override void OnBallMoved(BallEventArgs args)
+        {
+            base.OnBallMoved(args);
         }
     }
 }

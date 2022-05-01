@@ -39,7 +39,7 @@ namespace Presentation.ViewModel
                 BallsList.Clear();
                 for (int i = 0; i < BallsNumber; i++)
 				{
-                    BallsList.Add(new NotifyBall(_model.GetScreenSize()/2, _model.GetBallsR()));
+                    BallsList.Add(new NotifyBall(_model.GetScreenSize()/2, _model.GetBallsD()));
 				}
 
                 _model.BallMoved += (sender, argv) =>
@@ -121,18 +121,18 @@ namespace Presentation.ViewModel
             set { _Y = value; OnPropertyChanged(); }
         }
 
-        private double _R;
-        public double R
+        private double _D;
+        public double D
         {
-            get { return _R; }
-            set { _R = value; OnPropertyChanged(); }
+            get { return _D; }
+            set { _D = value; OnPropertyChanged(); }
         }
 
-        public NotifyBall(Vector2 position, float R)
+        public NotifyBall(Vector2 position, float D)
         {
             X = (double)position.X;
             Y = (double)position.Y;
-            this.R = (double)R;
+            this.D = (double)D;
         }
 
         public void ChangePosition(Vector2 position)
