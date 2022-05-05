@@ -11,6 +11,7 @@ namespace Logic
         int id { get; }
         Vector2 position { get; }
         float ballD { get; }
+        float mass { get; }
     }
 
     internal class BallStripper : ILogicBall
@@ -25,5 +26,6 @@ namespace Logic
         public int id { get => ball.id; }
         public Vector2 position { get => ball.position; }
         public float ballD { get => ball.ballD; }
+        public float mass { get => ball.mass; }
     }
 }

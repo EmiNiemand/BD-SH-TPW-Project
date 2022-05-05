@@ -39,13 +39,17 @@ namespace Presentation.ViewModel
                 BallsList.Clear();
                 for (int i = 0; i < BallsNumber; i++)
 				{
-                    BallsList.Add(new NotifyBall(_model.GetScreenSize()/2, _model.GetBallsD()));
+                    var notifyBall = new NotifyBall();
+                    BallsList.Add(notifyBall);
 				}
 
-                _model.BallMoved += (sender, argv) =>
+                _model.BallMoved += (sender, args) =>
                 {
                     if (BallsList.Count > 0)
-                        BallsList[argv.id].ChangePosition(argv.position);
+                    {
+                        BallsList[args.id].ChangePosition(args.position);
+                        BallsList[args.id].ChangeD(args.ballD);
+                    }
                 };
                 ((RelayCommand)CreateBallsAndStartSimulation).ChangeIsEnable(false);
                 _model.StartSimulation();
@@ -55,7 +59,8 @@ namespace Presentation.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var args = new PropertyChangedEventArgs(propertyName);
+            PropertyChanged?.Invoke(this, args);
         }
 
     }
@@ -128,11 +133,12 @@ namespace Presentation.ViewModel
             set { _D = value; OnPropertyChanged(); }
         }
 
-        public NotifyBall(Vector2 position, float D)
+        public NotifyBall()
         {
+            var position = new Vector2(0, 0);
             X = (double)position.X;
             Y = (double)position.Y;
-            this.D = (double)D;
+            this.D = 0;
         }
 
         public void ChangePosition(Vector2 position)
@@ -140,6 +146,11 @@ namespace Presentation.ViewModel
             X = position.X;
             Y = position.Y;
 		}
+
+        public void ChangeD(float D)
+        {
+            this.D = D;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string caller = "")
