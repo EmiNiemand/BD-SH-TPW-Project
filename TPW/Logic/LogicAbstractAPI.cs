@@ -42,6 +42,7 @@ namespace Logic
 
 	public class LogicApi : LogicAbstractApi
 	{
+		private Mutex mutex = new Mutex();
 		protected readonly DataAbstractApi? data;
 		public LogicApi(DataAbstractApi data)
 		{
@@ -62,8 +63,19 @@ namespace Logic
 		private void OnDataBallMoved(object _, Data.BallsEventArgs args)
 		{
 			this.OnBallMoved(new LogicBallEventArgs(new BallStripper(args.Ball)));
+			this.HandleCollisions(args.Ball, args.Balls);
 			CollisionHandler.DoesBallCollideWithWalls(args.Ball, data.screenSize);
-			//tutaj dopisać jakieś ogarnianie odbić kulek ale to nie na moją głowę póki co 
+		}
+
+		private void HandleCollisions(IBall ball, IList<IBall> ballList)
+        {
+			mutex.WaitOne();
+			var collidedBall = CollisionHandler.CheckBallsCollisions(ball, ballList);
+			if (collidedBall != null)
+			{
+				CollisionHandler.HandleBallsCollision(ball, collidedBall);
+			}
+			mutex.ReleaseMutex();
 		}
 	}
 }
