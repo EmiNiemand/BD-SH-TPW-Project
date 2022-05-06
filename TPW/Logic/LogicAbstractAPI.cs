@@ -70,12 +70,18 @@ namespace Logic
 		private void HandleCollisions(IBall ball, IList<IBall> ballList)
         {
 			mutex.WaitOne();
-			var collidedBall = CollisionHandler.CheckBallsCollisions(ball, ballList);
-			if (collidedBall != null)
-			{
-				CollisionHandler.HandleBallsCollision(ball, collidedBall);
+            try
+            {
+				var collidedBall = CollisionHandler.CheckBallsCollisions(ball, ballList);
+				if (collidedBall != null)
+				{
+					CollisionHandler.HandleBallsCollision(ball, collidedBall);
+				}
 			}
-			mutex.ReleaseMutex();
+            finally
+            {
+				mutex.ReleaseMutex();
+			}
 		}
 	}
 }

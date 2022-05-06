@@ -116,12 +116,12 @@ namespace Data
 
         public float GetRandomD()
         {
-            return random.Next(10, 40);
+            return random.Next(20, 40);
         }
 
         public float GetRandomMass()
         {
-            return (float)(random.Next(1, 5)) / 2;
+            return (float)(random.Next(1, 10)) / 5;
         }
 
         public Vector2 GenerateDirection()

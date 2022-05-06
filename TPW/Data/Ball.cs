@@ -51,7 +51,7 @@ namespace Data
         {
             while (true)
             {
-                this.position += direction * mass;
+                this.position += direction;
                 var args = new BallEventArgs(this);
                 Moved?.Invoke(this, args);
                 await Task.Delay(1);

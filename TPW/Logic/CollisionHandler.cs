@@ -28,16 +28,16 @@ namespace Logic
 
         private static bool DoBallsCollide(IBall ball1, IBall ball2)
         {
-            var ball1NextPos = ball1.position + (Vector2.One * ball1.ballD / 2) + ball1.direction * ball1.mass;
-            var ball2NextPos = ball2.position + (Vector2.One * ball2.ballD / 2) + ball2.direction * ball2.mass;
+            var ball1NextPos = ball1.position + (Vector2.One * ball1.ballD / 2) + ball1.direction;
+            var ball2NextPos = ball2.position + (Vector2.One * ball2.ballD / 2) + ball2.direction;
             var ballsDistance = (ball1NextPos.X - ball2NextPos.X) * (ball1NextPos.X - ball2NextPos.X) + (ball1NextPos.Y - ball2NextPos.Y) * (ball1NextPos.Y - ball2NextPos.Y);
-            var ballsRDistance = (ball1.ballD / 2 + ball2.ballD / 2) * (ball1.ballD / 2 + ball2.ballD / 2);
+            var ballsRDistance = (ball1.ballD + ball2.ballD) * (ball1.ballD + ball2.ballD) / 4;
             return ballsDistance <= ballsRDistance;
         }
 
         public static void DoesBallCollideWithWalls(IBall ball, Vector2 screenSize)
         {
-            var ballNextPos = ball.position + (Vector2.One * ball.ballD / 2) + ball.direction * ball.mass;
+            var ballNextPos = ball.position + (Vector2.One * ball.ballD / 2) + ball.direction;
             if (ballNextPos.X <= ball.ballD / 2 || ballNextPos.X + ball.ballD / 2 >= screenSize.X)
             {
                 ball.direction = new Vector2(-ball.direction.X, ball.direction.Y);
@@ -58,13 +58,13 @@ namespace Logic
             var massCalculation1 = (2 * ball2.mass / (ball1.mass + ball2.mass));
             var dotProduct1 = Vector2.Dot((ball1.direction - ball2.direction), (ball1center - ball2center));
             var Oi1 = ball1center - ball2center;
-            ball1.direction = ball1.direction - massCalculation1 * dotProduct1 / (float)centerDistancePow1 * Oi1;
+            ball1.direction -= massCalculation1 * dotProduct1 / (float)centerDistancePow1 * Oi1;
 
             var centerDistancePow2 = Math.Pow((ball2center.X - ball1center.X), 2) + Math.Pow((ball2center.Y - ball1center.Y), 2);
             var massCalculation2 = (2 * ball1.mass / (ball1.mass + ball2.mass));
             var dotProduct2 = Vector2.Dot((ball2.direction - ball1.direction), (ball2center - ball1center));
             var Oi2 = ball2center - ball1center;
-            ball2.direction = ball2.direction - massCalculation2 * dotProduct2 / (float)centerDistancePow2 * Oi2;
+            ball2.direction -= massCalculation2 * dotProduct2 / (float)centerDistancePow2 * Oi2;
         }
     }
 }
