@@ -3,7 +3,7 @@ using Logic;
 
 namespace LogicTests
 {
-    public class BallWrapperTest
+    public class BallStripperTest
     {
         LogicAbstractApi logic;
         BallWrapper ballWrapper;

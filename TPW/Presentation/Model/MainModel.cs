@@ -7,24 +7,11 @@ using Logic;
 
 namespace Presentation.Model
 {
-    public class BallEventArgs : EventArgs
-    {
-        public int id;
-        public Vector2 position;
-        public float ballD;
-        public BallEventArgs(int id, Vector2 position, float ballD)
-        {
-            this.id = id;
-            this.position = position;
-            this.ballD = ballD;
-        }
-    }
-
     public class MainModel
     {
         private Vector2 _screenSize;
         private LogicAbstractApi _logic;
-        public event EventHandler<BallEventArgs> BallMoved;
+        public event EventHandler<ModelBallEventArgs> BallMoved;
         private int _ballNumber;
 
         public MainModel(LogicAbstractApi logic = default(LogicAbstractApi))
@@ -37,7 +24,7 @@ namespace Presentation.Model
             this._logic = logic;
             logic.BallMoved += (sender, argv) =>
             {
-                var args = new BallEventArgs(argv.Ball.id, argv.Ball.position, argv.Ball.ballD);
+                var args = new ModelBallEventArgs(argv.Ball.id, argv.Ball.position, argv.Ball.ballD);
                 BallMoved?.Invoke(this, args);
             };
         }
@@ -63,7 +50,7 @@ namespace Presentation.Model
             return _screenSize;
         }
 
-        public void OnBallMoved(BallEventArgs args)
+        public void OnBallMoved(ModelBallEventArgs args)
         {
             BallMoved?.Invoke(this, args);
         }

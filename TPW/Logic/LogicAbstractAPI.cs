@@ -11,16 +11,6 @@ using Data;
 
 namespace Logic
 {
-	public class LogicBallEventArgs : EventArgs
-	{
-		public readonly ILogicBall Ball;
-		public LogicBallEventArgs(ILogicBall ball)
-		{
-			this.Ball = ball;
-		}
-	}
-
-
 	public abstract class LogicAbstractApi
 	{
 		public event EventHandler<LogicBallEventArgs>? BallMoved;
@@ -63,25 +53,18 @@ namespace Logic
 		private void OnDataBallMoved(object _, Data.BallsEventArgs args)
 		{
 			this.OnBallMoved(new LogicBallEventArgs(new BallStripper(args.Ball)));
-			this.HandleCollisions(args.Ball, args.Balls);
-			CollisionHandler.DoesBallCollideWithWalls(args.Ball, data.screenSize);
-		}
 
-		private void HandleCollisions(IBall ball, IList<IBall> ballList)
-        {
 			mutex.WaitOne();
-            try
-            {
-				var collidedBall = CollisionHandler.CheckBallsCollisions(ball, ballList);
-				if (collidedBall != null)
-				{
-					CollisionHandler.HandleBallsCollision(ball, collidedBall);
-				}
+
+			var collidedBall = CollisionHandler.CheckBallsCollisions(args.Ball, args.Balls);
+			if (collidedBall != null)
+			{
+				CollisionHandler.HandleBallsCollision(args.Ball, collidedBall);
 			}
-            finally
-            {
-				mutex.ReleaseMutex();
-			}
+
+			mutex.ReleaseMutex();
+
+			CollisionHandler.DoesBallCollideWithWalls(args.Ball, data.screenSize);
 		}
 	}
 }

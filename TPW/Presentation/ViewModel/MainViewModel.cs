@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
 using System.Windows.Input;
 using Presentation.Model;
 
@@ -107,109 +105,6 @@ namespace Presentation.ViewModel
         public void Execute(object parameter)
         {
             _handler();
-        }
-    }
-
-    public class NotifyBall : INotifyPropertyChanged
-    {
-        private double _X;
-        public double X
-        {
-            get { return _X; }
-            set { _X = value; OnPropertyChanged(); }
-        }
-
-        private double _Y;
-        public double Y
-        {
-            get { return _Y; }
-            set { _Y = value; OnPropertyChanged(); }
-        }
-
-        private double _D;
-        public double D
-        {
-            get { return _D; }
-            set { _D = value; OnPropertyChanged(); }
-        }
-
-        public NotifyBall()
-        {
-            var position = new Vector2(0, 0);
-            X = (double)position.X;
-            Y = (double)position.Y;
-            this.D = 0;
-        }
-
-        public void ChangePosition(Vector2 position)
-		{
-            X = position.X;
-            Y = position.Y;
-		}
-
-        public void ChangeD(float D)
-        {
-            this.D = D;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string caller = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
-        }
-    }
-
-    public class AsyncObservableCollection<T> : ObservableCollection<T>
-    {
-        private SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
-
-        public AsyncObservableCollection()
-        {
-        }
-
-        public AsyncObservableCollection(IEnumerable<T> list)
-            : base(list)
-        {
-        }
-
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            if (SynchronizationContext.Current == _synchronizationContext)
-            {
-                // Execute the CollectionChanged event on the current thread
-                RaiseCollectionChanged(e);
-            }
-            else
-            {
-                // Raises the CollectionChanged event on the creator thread
-                _synchronizationContext.Send(RaiseCollectionChanged, e);
-            }
-        }
-
-        private void RaiseCollectionChanged(object param)
-        {
-            // We are in the creator thread, call the base implementation directly
-            base.OnCollectionChanged((NotifyCollectionChangedEventArgs)param);
-        }
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if (SynchronizationContext.Current == _synchronizationContext)
-            {
-                // Execute the PropertyChanged event on the current thread
-                RaisePropertyChanged(e);
-            }
-            else
-            {
-                // Raises the PropertyChanged event on the creator thread
-                _synchronizationContext.Send(RaisePropertyChanged, e);
-            }
-        }
-
-        private void RaisePropertyChanged(object param)
-        {
-            // We are in the creator thread, call the base implementation directly
-            base.OnPropertyChanged((PropertyChangedEventArgs)param);
         }
     }
 }

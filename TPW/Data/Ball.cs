@@ -9,15 +9,6 @@ using System.Diagnostics;
 
 namespace Data
 {
-    public class BallEventArgs : EventArgs
-    {
-        public readonly IBall Ball;
-        public BallEventArgs(IBall ball)
-        {
-            this.Ball = ball;
-        }
-    }
-
     public interface IBall
     {
         public int id { get; }
