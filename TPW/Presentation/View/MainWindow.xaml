@@ -29,7 +29,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate >
                         <Canvas>
-                            <Ellipse Width="{Binding R}" Height="{Binding R}" Fill="White" StrokeThickness="2">
+                            <Ellipse Width="{Binding D}" Height="{Binding D}" Fill="White" StrokeThickness="2">
                                 <Ellipse.RenderTransform>
                                     <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
                                 </Ellipse.RenderTransform>

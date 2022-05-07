@@ -4,51 +4,49 @@ using System.Numerics;
 using System.Text;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Data
 {
     public interface IBall
     {
-        public float ballX { get; set; }
-        public float ballY { get; set; }
-        public float ballR { get; }
-
-        public void ChangePosition(Vector2 position);
-        public Vector2 GetPosition();
-        public float GetRadius();
+        public int id { get; }
+        public Vector2 position { get; }
+        public float ballD { get; }
+        public float mass { get; }
+        public Vector2 direction { get; set; }
+        public void StartMoving();
+        public event EventHandler<BallEventArgs>? Moved;
     }
 
-    internal class Ball : IBall
+    public class Ball : IBall
     {
-        public float ballX { get; set; }
-        public float ballY { get; set; }
-        public float ballR { get; }
+        public int id { get; }
+        public Vector2 position { get; private set; }
+        public float ballD { get; }
+        public float mass { get; }
+        public Vector2 direction { get; set; }
+        public event EventHandler<BallEventArgs>? Moved;
 
-        public Ball(float ballx, float bally, float ballr)
+        public Ball(int id, Vector2 position, float ballD, float mass, Vector2 direction)
         {
-            ballX = ballx;
-            ballY = bally;
-            ballR = ballr;
+            this.id = id;
+            this.position = position;
+            this.ballD = ballD;
+            this.mass = mass;
+            this.direction = direction;
         }
 
-        public Ball(Vector2 position, float ballR) : this(position.X, position.Y, ballR)
+        public async void StartMoving()
         {
-        }
-
-        public void ChangePosition(Vector2 position)
-        {
-            ballX = position.X;
-            ballY = position.Y;
-        }
-
-        public Vector2 GetPosition()
-        {
-            return new Vector2(ballX, ballY);
-        }
-
-        public float GetRadius()
-        {
-            return ballR;
+            while (true)
+            {
+                this.position += direction;
+                var args = new BallEventArgs(this);
+                Moved?.Invoke(this, args);
+                await Task.Delay(1);
+            }
         }
     }
 }

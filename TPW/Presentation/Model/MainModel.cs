@@ -7,37 +7,25 @@ using Logic;
 
 namespace Presentation.Model
 {
-    public class BallEventArgs : EventArgs
-    {
-        public Vector2 position;
-        public int id;
-        public BallEventArgs(int id, Vector2 position)
-        {
-            this.id = id;
-            this.position = position;
-        }
-    }
-
     public class MainModel
     {
         private Vector2 _screenSize;
         private LogicAbstractApi _logic;
-        public event EventHandler<BallEventArgs> BallMoved;
+        public event EventHandler<ModelBallEventArgs> BallMoved;
         private int _ballNumber;
-        private float _ballsR;
 
         public MainModel(LogicAbstractApi logic = default(LogicAbstractApi))
         {
-            _ballsR = 10;
             _screenSize = new Vector2(800, 500);
             if (logic == null)
             {
                 logic = LogicAbstractApi.CreateApi(_screenSize);
             }
             this._logic = logic;
-            logic.BallMoved += (sender, args) =>
+            logic.BallMoved += (sender, argv) =>
             {
-                BallMoved?.Invoke(this, new BallEventArgs(args.id, args.position));
+                var args = new ModelBallEventArgs(argv.Ball.id, argv.Ball.position, argv.Ball.ballD);
+                BallMoved?.Invoke(this, args);
             };
         }
 
@@ -53,8 +41,8 @@ namespace Presentation.Model
 
         public void StartSimulation()
         {
-            _logic.CreateBalls(_ballNumber, _ballsR);
-            _logic.MoveBalls(33);
+            _logic.CreateBalls(_ballNumber);
+            _logic.StartSimulation();
         }
 
         public Vector2 GetScreenSize()
@@ -62,9 +50,9 @@ namespace Presentation.Model
             return _screenSize;
         }
 
-        public float GetBallsR()
+        public void OnBallMoved(ModelBallEventArgs args)
         {
-            return _ballsR;
+            BallMoved?.Invoke(this, args);
         }
     }
 }
