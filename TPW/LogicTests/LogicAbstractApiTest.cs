@@ -1,56 +1,35 @@
 ﻿using NUnit.Framework;
 using Logic;
-using System;
 using System.Numerics;
-using System.Collections.Generic;
+using Data;
 
 namespace LogicTests
 {
-    public class LogicAbstractApiTest
+    public class LogicApiTest
     {
-        LogicAbstractApi logic;
+        DataApi dataApi;
+        LogicAbstractApi abstractLogic;
+        LogicApi logic;
 
         [SetUp]
         public void Setup()
         {
-            logic = LogicAbstractApi.CreateApi(new System.Numerics.Vector2(800, 500));
-            logic.CreateBalls(3, 3);
+            dataApi = new DataApi(new Vector2(800, 500));
+            abstractLogic = LogicAbstractApi.CreateApi(new Vector2(800, 500));
+            logic = new LogicApi(dataApi);
+            logic.CreateBalls(3);
         }
 
         [Test]
         public void CreateApiTest()
         {
-            Assert.IsNotNull(logic);
+            logic.StartSimulation();
         }
 
         [Test]
-        public void CreateAndGetBallsTest()
+        public void CreateAbstractApiTest()
         {
-            Assert.AreEqual(logic.GetBalls().Count, 3);
-        }
-
-        [Test]
-        public void MoveBallTest()
-        {
-            Vector2 ball = logic.GetBalls()[0].GetPosition();
-            logic.MoveBall(logic.GetBalls()[0]);
-            Assert.AreNotEqual(ball, logic.GetBalls()[0].GetPosition());
-            foreach (var bal in logic.GetBalls())
-            {
-                Assert.AreNotEqual(bal.GetPosition(), ball);
-                Assert.Greater(bal.GetPosition().X, 0);
-                Assert.Greater(bal.GetPosition().Y, 0);
-                Assert.Greater(logic.screenSize.X, bal.GetPosition().X);
-                Assert.Greater(logic.screenSize.Y, bal.GetPosition().Y);
-            }
-        }
-
-        [Test]
-        public void ClearBallsTest()
-        {
-            Assert.IsNotNull(logic);
-            logic.ClearBalls();
-            Assert.AreEqual(logic.GetBalls().Count, 0);
+            abstractLogic.StartSimulation();
         }
     }
 }
