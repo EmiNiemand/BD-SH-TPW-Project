@@ -32,7 +32,7 @@ namespace Presentation.ViewModel
 
         public NotifyBall()
         {
-            var position = new Vector2(0, 0);
+            Vector2 position = new Vector2(0, 0);
             X = (double)position.X;
             Y = (double)position.Y;
             this.D = 0;

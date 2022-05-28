@@ -29,12 +29,12 @@ namespace Data
         public Vector2 direction { get; set; }
         public event EventHandler<BallEventArgs>? Moved;
 
-        public Ball(int id, Vector2 position, float ballD, float mass, Vector2 direction)
+        public Ball(int id, Vector2 position, float ballD, Vector2 direction)
         {
             this.id = id;
             this.position = position;
             this.ballD = ballD;
-            this.mass = mass;
+            this.mass = ballD / 10;
             this.direction = direction;
         }
 
@@ -43,7 +43,7 @@ namespace Data
             while (true)
             {
                 this.position += direction;
-                var args = new BallEventArgs(this);
+                BallEventArgs args = new BallEventArgs(this);
                 Moved?.Invoke(this, args);
                 await Task.Delay(1);
             }

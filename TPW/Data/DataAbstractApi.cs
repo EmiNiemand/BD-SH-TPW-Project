@@ -53,11 +53,11 @@ namespace Data
 
         public override void StartSimulation()
         {
-            foreach (var ball in ballsList)
+            foreach (IBall ball in ballsList)
             {
                 ball.Moved += (sender, argv) =>
                 {
-                    var args = new BallsEventArgs(argv.Ball, new List<IBall>(ballsList));
+                    BallsEventArgs args = new BallsEventArgs(argv.Ball, new List<IBall>(ballsList));
                     this.OnBallMoved(args);
                 };
                 Task.Factory.StartNew(ball.StartMoving);
@@ -73,16 +73,16 @@ namespace Data
         {   
             for (int i = 0; i < ballsNumber; i++)
             {
-                var ballD = this.GetRandomD();
-                var isPositionFree = false;
-                var position = new Vector2(0, 0);
+                float ballD = this.GetRandomD();
+                bool isPositionFree = false;
+                Vector2 position = new Vector2(0, 0);
                 while (!isPositionFree)
                 {
                     position = this.GetStartRandomPosition(ballD);
                     isPositionFree = this.IsPositionFree(position, ballD);
 
                 }
-                Ball ball = new Ball(ballsList.Count, position, ballD, this.GetRandomMass(), this.GenerateDirection());
+                Ball ball = new Ball(ballsList.Count, position, ballD, this.GenerateDirection());
                 ballsList.Add(ball);
             }
         }
@@ -97,7 +97,7 @@ namespace Data
 
         private bool IsPositionFree(Vector2 position, float ballD)
         {
-            foreach (var ball in ballsList)
+            foreach (IBall ball in ballsList)
             {
                 if(this.DoBallsCollide(position, ballD, ball.position, ball.ballD))
                 {
@@ -109,19 +109,14 @@ namespace Data
 
         private bool DoBallsCollide(Vector2 pos1, float ballD1, Vector2 pos2, float ballD2)
         {
-            var ballsDistance = (pos1.X - pos2.X) * (pos1.X - pos2.X) + (pos1.Y - pos2.Y) * (pos1.Y - pos2.Y);
-            var ballsRDistance = (ballD1/2 + ballD2/2) * (ballD1/2 + ballD2/2);
+            float ballsDistance = (pos1.X - pos2.X) * (pos1.X - pos2.X) + (pos1.Y - pos2.Y) * (pos1.Y - pos2.Y);
+            float ballsRDistance = (ballD1/2 + ballD2/2) * (ballD1/2 + ballD2/2);
             return ballsDistance <= ballsRDistance;
         }
 
         public float GetRandomD()
         {
             return random.Next(20, 40);
-        }
-
-        public float GetRandomMass()
-        {
-            return (float)(random.Next(1, 10)) / 5;
         }
 
         public Vector2 GenerateDirection()

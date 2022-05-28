@@ -37,7 +37,7 @@ namespace Presentation.ViewModel
                 BallsList.Clear();
                 for (int i = 0; i < BallsNumber; i++)
 				{
-                    var notifyBall = new NotifyBall();
+                    NotifyBall notifyBall = new NotifyBall();
                     BallsList.Add(notifyBall);
 				}
 
@@ -57,7 +57,7 @@ namespace Presentation.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            var args = new PropertyChangedEventArgs(propertyName);
+            PropertyChangedEventArgs args = new PropertyChangedEventArgs(propertyName);
             PropertyChanged?.Invoke(this, args);
         }
 
