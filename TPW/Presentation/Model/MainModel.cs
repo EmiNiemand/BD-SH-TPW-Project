@@ -24,7 +24,7 @@ namespace Presentation.Model
             this._logic = logic;
             logic.BallMoved += (sender, argv) =>
             {
-                var args = new ModelBallEventArgs(argv.Ball.id, argv.Ball.position, argv.Ball.ballD);
+                ModelBallEventArgs args = new ModelBallEventArgs(argv.Ball.id, argv.Ball.position, argv.Ball.ballD);
                 BallMoved?.Invoke(this, args);
             };
         }

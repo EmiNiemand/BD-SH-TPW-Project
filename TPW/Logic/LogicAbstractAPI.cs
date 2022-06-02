@@ -56,7 +56,7 @@ namespace Logic
 
 			mutex.WaitOne();
 
-			var collidedBall = CollisionHandler.CheckBallsCollisions(args.Ball, args.Balls);
+			IBall collidedBall = CollisionHandler.CheckBallsCollisions(args.Ball, args.Balls);
 			if (collidedBall != null)
 			{
 				CollisionHandler.HandleBallsCollision(args.Ball, collidedBall);
