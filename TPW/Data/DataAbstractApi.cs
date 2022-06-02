@@ -63,10 +63,7 @@ namespace Data
             }
         }
 
-        public override IList<IBall> GetBalls()
-        {
-            return list;
-        }
+        public override IList<IBall>? GetBalls() => list;
 
         public override void CreateBalls(int ballsNumber)
         {

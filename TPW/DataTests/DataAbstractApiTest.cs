@@ -17,11 +17,10 @@ namespace DataTests
 
     internal class DataApiTest
     {
-        DataApi dataApi;
+        DataApi dataApi = new DataApi(new System.Numerics.Vector2(900, 900));
         [SetUp]
         public void Setup()
         {
-            dataApi = new DataApi(new System.Numerics.Vector2(900, 900));
             dataApi.CreateBalls(10);
         }
 

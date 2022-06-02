@@ -11,7 +11,7 @@ namespace DataTests
         [SetUp]
         public void Setup()
         {
-            ball = new Ball(0, new Vector2(0, 0), 0, 5, new Vector2(1, 1));
+            ball = new Ball(0, new Vector2(0, 0), 5, new Vector2(1, 1));
         }
 
         [Test]
