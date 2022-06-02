@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace Data
 {
-    public interface IBall
+    public interface IBall : ISerializable
     {
         public int id { get; }
         public Vector2 position { get; }
@@ -47,6 +44,15 @@ namespace Data
                 Moved?.Invoke(this, args);
                 await Task.Delay(1);
             }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("ID", id);
+            info.AddValue("Diameter", ballD);
+            info.AddValue("Mass", mass);
+            info.AddValue("Position", position);
+            info.AddValue("Velocity", direction);
         }
     }
 }
