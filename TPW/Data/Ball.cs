@@ -45,13 +45,13 @@ namespace Data
             }
         }
 
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetBallInfo(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("ID", id);
             info.AddValue("Diameter", ballD);
             info.AddValue("Mass", mass);
             info.AddValue("Position", position);
-            info.AddValue("Velocity", direction);
+            info.AddValue("Direction", direction);
         }
     }
 }

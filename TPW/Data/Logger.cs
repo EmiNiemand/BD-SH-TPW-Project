@@ -22,14 +22,17 @@ namespace Data
         public Logger()
         {
             string tempPath = Path.GetTempPath();
-            logPath = tempPath + "z.json";
-
-            if (File.Exists(logPath))
+            logPath = tempPath + "zLoggingBalls.json";
+            try
             {
-                string input = File.ReadAllText(logPath);
-                dataArray = JArray.Parse(input);
-                return;
+                if (File.Exists(logPath))
+                {
+                    string input = File.ReadAllText(logPath);
+                    dataArray = JArray.Parse(input);
+                    return;
+                }
             }
+            catch (JsonReaderException) { }
 
             dataArray = new JArray();
             File.Create(logPath);
