@@ -45,7 +45,7 @@ namespace Data
             }
         }
 
-        public void GetBallInfo(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("ID", id);
             info.AddValue("Diameter", ballD);
