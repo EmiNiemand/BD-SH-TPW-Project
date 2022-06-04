@@ -11,11 +11,8 @@ namespace Data
     internal class Logger
     {
         private readonly string logPath;
-
-        private Task? loggingTask;
-
         private readonly ConcurrentQueue<JObject> ballQueue = new ConcurrentQueue<JObject>();
-
+        private Mutex fileMutex = new Mutex();
         private readonly Mutex queueMutex = new Mutex();
         private readonly JArray dataArray;
 
@@ -46,11 +43,6 @@ namespace Data
                 JObject itemToAdd = JObject.FromObject(ball);
                 itemToAdd["Time"] = DateTime.Now.ToString("HH:mm:ss");
                 ballQueue.Enqueue(itemToAdd);
-
-                if (loggingTask == null || loggingTask.IsCompleted)
-                {
-                    loggingTask = Task.Factory.StartNew(this.LogToFile);
-                }
             }
             finally
             {
@@ -58,25 +50,27 @@ namespace Data
             }
         }
 
-        private Mutex fileMutex = new Mutex();
-
-        private async Task LogToFile()
+        public async void LogToFile()
         {
-            while (ballQueue.TryDequeue(out JObject ball))
+            while(true)
             {
-                dataArray.Add(ball);
-            }
+                while (ballQueue.TryDequeue(out JObject ballFromQueue))
+                {
+                    dataArray.Add(ballFromQueue);
+                }
 
-            string output = JsonConvert.SerializeObject(dataArray);
+                string output = JsonConvert.SerializeObject(dataArray);
 
-            fileMutex.WaitOne();
-            try
-            {
-                File.WriteAllText(logPath, output);
-            }
-            finally
-            {
-                fileMutex.ReleaseMutex();
+                fileMutex.WaitOne();
+                try
+                {
+                    File.WriteAllText(logPath, output);
+                }
+                finally
+                {
+                    fileMutex.ReleaseMutex();
+                }
+                await Task.Delay(1000);
             }
         }
 

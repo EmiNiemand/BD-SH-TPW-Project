@@ -53,6 +53,7 @@ namespace Data
 
         public override void StartSimulation()
         {
+            Task.Factory.StartNew(logger.LogToFile);
             foreach (IBall? ball in list)
             {
                 ball.Moved += (sender, argv) =>
@@ -127,8 +128,10 @@ namespace Data
 
         public override void OnBallMoved(BallsEventArgs args)
         {
-            logger.AddToLogQueue(args.Ball);
+            Ball ballCopy = new Ball(args.Ball.id, new Vector2(args.Ball.position.X, args.Ball.position.Y), args.Ball.ballD, new Vector2(args.Ball.direction.X, args.Ball.direction.Y));
+            logger.AddToLogQueue(ballCopy);
             base.OnBallMoved(args);
         }
+
     }
 }
