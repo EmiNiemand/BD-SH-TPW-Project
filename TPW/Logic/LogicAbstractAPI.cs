@@ -55,14 +55,18 @@ namespace Logic
 			this.OnBallMoved(new LogicBallEventArgs(new BallStripper(args.Ball)));
 
 			mutex.WaitOne();
-
-			IBall collidedBall = CollisionHandler.CheckBallsCollisions(args.Ball, args.Balls);
-			if (collidedBall != null)
-			{
-				CollisionHandler.HandleBallsCollision(args.Ball, collidedBall);
+            try
+            {
+				IBall collidedBall = CollisionHandler.CheckBallsCollisions(args.Ball, args.Balls);
+				if (collidedBall != null)
+				{
+					CollisionHandler.HandleBallsCollision(args.Ball, collidedBall);
+				}
 			}
-
-			mutex.ReleaseMutex();
+            finally
+            {
+				mutex.ReleaseMutex();
+			}
 
 			CollisionHandler.DoesBallCollideWithWalls(args.Ball, data.screenSize);
 		}

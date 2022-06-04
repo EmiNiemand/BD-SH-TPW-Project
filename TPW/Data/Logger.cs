@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Data
 {
-    internal class Logger : ILogger
+    internal class Logger
     {
         private readonly string logPath;
 

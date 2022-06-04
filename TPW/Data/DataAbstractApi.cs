@@ -42,12 +42,13 @@ namespace Data
 
     public class DataApi : DataAbstractApi
     {
-        private readonly ILogger logger = new Logger();
+        private readonly Logger logger;
 
         public DataApi(Vector2 screenSize) : base(screenSize)
         {
             this.list = new List<IBall>();
             this.random = new Random();
+            this.logger = new Logger();
         }
 
         public override void StartSimulation()
