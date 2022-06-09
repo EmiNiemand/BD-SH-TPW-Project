@@ -121,8 +121,8 @@ namespace Data
         public Vector2 GenerateDirection()
         {
             Vector2 direction;
-            direction.X = (float)(random.NextDouble() * 10 - 5);
-            direction.Y = (float)(random.NextDouble() * 10 - 5);
+            direction.X = (float)((random.NextDouble() * 2 - 1) * 2);
+            direction.Y = (float)((random.NextDouble() * 2 - 1) * 2);
             return direction;
         }
 

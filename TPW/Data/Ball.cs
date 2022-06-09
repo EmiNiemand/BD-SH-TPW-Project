@@ -41,7 +41,7 @@ namespace Data
                 this.position += direction;
                 BallEventArgs args = new BallEventArgs(this);
                 Moved?.Invoke(this, args);
-                await Task.Delay(1);
+                await Task.Delay(10);
             }
         }
 

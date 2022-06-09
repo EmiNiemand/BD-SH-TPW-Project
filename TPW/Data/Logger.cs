@@ -24,9 +24,7 @@ namespace Data
             {
                 if (File.Exists(logPath))
                 {
-                    string input = File.ReadAllText(logPath);
-                    dataArray = JArray.Parse(input);
-                    return;
+                    File.Delete(logPath);
                 }
             }
             catch (JsonReaderException) { }
